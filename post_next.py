@@ -2,6 +2,7 @@
 
     python post_next.py            # post the first queue item that has no "posted_at"
     python post_next.py --dry-run  # show what would be posted
+    python post_next.py --force    # post even if the last post was under 100 minutes ago
 
 Env: IG_TOKEN (a user token with instagram_content_publish), IG_USER_ID (the Instagram account id).
 Locally the token can come from IG_TOKEN_FILE (a KEY=value file with IG_ACCESS_TOKEN=...).
@@ -68,6 +69,12 @@ def main():
         return
     video_url = q["base_url"] + item["file"]
     print("next:", item["file"])
+    last = max((p["posted_at"] for p in q["posts"] if p.get("posted_at")), default=None)
+    if last and "--force" not in sys.argv:
+        ago = datetime.datetime.now(datetime.timezone.utc) - datetime.datetime.strptime(last, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
+        if ago < datetime.timedelta(minutes=100):
+            print("last post was %d min ago: waiting for the next run" % (ago.total_seconds() // 60))
+            return
     if dry:
         print(item["caption"])
         return

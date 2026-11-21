@@ -2,7 +2,9 @@ name: Post next reel
 
 on:
   schedule:
-    - cron: "50 */2 * * *" # every 2 hours at :50 UTC (GitHub may start it a few minutes late)
+    # GitHub skips many scheduled runs, so check every 20 minutes; post_next.py only posts once
+    # 115 minutes have passed since the last post, which keeps posts about 2 hours apart.
+    - cron: "*/20 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -18,6 +20,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main # the queue as it is now, not as it was when this run was queued
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"

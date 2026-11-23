@@ -1,5 +1,5 @@
 {
-  "note": "BLOODPACT Instagram queue. post_next.py posts the first item without posted_at. Videos live in this repo's releases.",
+  "note": "BLOODPACT Instagram queue. post_next.py posts the first item without posted_at, not before its post_at (UTC) if it has one. Videos live in this repo's releases.",
   "ig_user_id": "17841438434401245",
   "base_url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/reels-2026-11-20/",
   "posts": [
@@ -98,6 +98,69 @@
       "posted_at": "2026-11-23T03:07:26Z",
       "media_id": "17955481260339176",
       "permalink": "https://www.instagram.com/reel/DgEYF_KCA-6/"
+    },
+    {
+      "file": "BLOODPACT_FULL_01_cash_burn.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_01_cash_burn.mp4",
+      "post_at": "2026-11-23T21:00:00Z",
+      "cover_ms": 5783,
+      "caption": "Lost count yet? 💸\nBLOODPACT: round-based zombie survival for up to 4 players. Out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #RobloxZombies #Gaming"
+    },
+    {
+      "file": "BLOODPACT_FULL_06_cat_blink.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_06_cat_blink.mp4",
+      "post_at": "2026-11-24T00:00:00Z",
+      "cover_ms": 4400,
+      "caption": "You blinked. 👁️\nRound-based zombies, boss fights, 4-player co-op. BLOODPACT is out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #HorrorGame #CoopGames"
+    },
+    {
+      "file": "BLOODPACT_FULL_08_pumpkin_eyes.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_08_pumpkin_eyes.mp4",
+      "post_at": "2026-11-24T02:30:00Z",
+      "cover_ms": 4967,
+      "caption": "You looked it in the eyes. 🎃\nBLOODPACT: round-based zombie survival for up to 4 players. Out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #BossFight #RobloxEdit"
+    },
+    {
+      "file": "BLOODPACT_FULL_05_eggs_lamp.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_05_eggs_lamp.mp4",
+      "post_at": "2026-11-24T21:00:00Z",
+      "cover_ms": 5733,
+      "caption": "The yolk broke. 🥚\nRound-based zombies, boss fights, 4-player co-op. BLOODPACT is out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #RobloxZombies #Gaming"
+    },
+    {
+      "file": "BLOODPACT_FULL_03_dominoes_fall.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_03_dominoes_fall.mp4",
+      "post_at": "2026-11-25T00:00:00Z",
+      "cover_ms": 4900,
+      "caption": "Did you blink before the last one fell? 😳\nBLOODPACT: round-based zombie survival for up to 4 players. Out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #HorrorGame #CoopGames"
+    },
+    {
+      "file": "BLOODPACT_FULL_02_padlock_gate.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_02_padlock_gate.mp4",
+      "post_at": "2026-11-25T02:30:00Z",
+      "cover_ms": 5783,
+      "caption": "We said don't open it. 🔒\nRound-based zombies, boss fights, 4-player co-op. BLOODPACT is out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #BossFight #RobloxEdit"
+    },
+    {
+      "file": "BLOODPACT_FULL_04_dog_fetch.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_04_dog_fetch.mp4",
+      "post_at": "2026-11-25T19:00:00Z",
+      "cover_ms": 3383,
+      "caption": "He came back with friends. 🐕\nBLOODPACT: round-based zombie survival for up to 4 players. Out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #RobloxZombies #Gaming"
+    },
+    {
+      "file": "BLOODPACT_FULL_09_iris_hole.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_09_iris_hole.mp4",
+      "post_at": "2026-11-25T23:00:00Z",
+      "cover_ms": 4467,
+      "caption": "You looked into the lens. 👁️\nRound-based zombies, boss fights, 4-player co-op. BLOODPACT is out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #HorrorGame #CoopGames"
+    },
+    {
+      "file": "BLOODPACT_FULL_07_soccer_orb.mp4",
+      "url": "https://github.com/elachkarhafez/bloodpact-social/releases/download/full-2026-11-23/BLOODPACT_FULL_07_soccer_orb.mp4",
+      "post_at": "2026-11-26T02:30:00Z",
+      "cover_ms": 3383,
+      "caption": "It touched the grass. ⚽\nBLOODPACT: round-based zombie survival for up to 4 players. Out now on Roblox.\n\n🎁 Comment your Roblox username below to get free gifts!\n\n#BLOODPACT #Roblox #RobloxGames #ZombieGame #BossFight #RobloxEdit"
     }
   ]
 }

@@ -2,13 +2,19 @@ name: Post next reel
 
 on:
   schedule:
-    # GitHub skips many scheduled runs, so check every 20 minutes; post_next.py only posts once
-    # 115 minutes have passed since the last post, which keeps posts about 2 hours apart.
-    - cron: "*/20 * * * *"
+    # GitHub skips many scheduled runs (gaps of 8 hours seen), so this is only a fallback: timed posts
+    # (post_at in queue.json) are kept by a chain of runs, each sleeping until the next slot and then
+    # starting the next run itself. Untimed items still post once 115 minutes have passed since the last post.
+    - cron: "7 * * * *"
   workflow_dispatch:
+    inputs:
+      max_wait_min:
+        description: "Longest wait for the next slot, in minutes (default 300)"
+        required: false
 
 permissions:
   contents: write
+  actions: write # to start the next run of the chain
 
 concurrency:
   group: post
@@ -17,7 +23,7 @@ concurrency:
 jobs:
   post:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 330
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,6 +31,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Wait for the next timed slot (up to 5 hours)
+        env:
+          WAIT_MAX_MIN: ${{ inputs.max_wait_min }}
+        run: python post_next.py --wait
+      - name: Refresh the queue
+        run: git pull --ff-only
       - name: Post the next queued reel
         env:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
@@ -36,5 +48,13 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add queue.json
             git commit -m "Posted a reel $(date -u +%Y-%m-%dT%H:%MZ)"
+            git pull --rebase
             git push
           fi
+      # Only after a clean run: a failing post must not loop (the hourly cron retries it instead).
+      - name: Start the next run while timed posts remain
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git pull --ff-only || true
+          if python post_next.py --pending; then gh workflow run post.yml --ref main -R "$GITHUB_REPOSITORY"; fi

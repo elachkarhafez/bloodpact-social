@@ -3,6 +3,12 @@
     python post_next.py            # post the first queue item that has no "posted_at"
     python post_next.py --dry-run  # show what would be posted
     python post_next.py --force    # post even if the last post was under 115 minutes ago
+    python post_next.py --wait     # sleep until the next item's post_at (at most WAIT_MAX), post nothing
+    python post_next.py --pending  # exit 0 if a timed item (post_at) is still unposted, else 1
+
+An item may carry "post_at" (UTC, "YYYY-MM-DDTHH:MM:SSZ"): it is not posted before that time. Items without it
+keep the old rule (the next run at least 115 minutes after the last post). An item may carry its own "url"
+instead of base_url + file.
 
 Env: IG_TOKEN (a user token with instagram_content_publish), IG_USER_ID (the Instagram account id).
 Locally the token can come from IG_TOKEN_FILE (a KEY=value file with IG_ACCESS_TOKEN=...).
@@ -21,6 +27,13 @@ sys.stdout.reconfigure(encoding="utf-8")
 HERE = os.path.dirname(os.path.abspath(__file__))
 QUEUE = os.path.join(HERE, "queue.json")
 API = "https://graph.facebook.com/v24.0"
+# a GitHub job may run 6 hours; the workflow starts the next run when this one ends
+WAIT_MAX = int(os.environ.get("WAIT_MAX_MIN") or 300) * 60
+UTC = datetime.timezone.utc
+
+
+def parse(ts):
+    return datetime.datetime.strptime(ts, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
 
 
 def load_token():
@@ -63,16 +76,33 @@ def main():
     global TOKEN
     dry = "--dry-run" in sys.argv
     q = json.load(open(QUEUE, encoding="utf-8"))
+    if "--pending" in sys.argv:
+        sys.exit(0 if any(p.get("post_at") and not p.get("posted_at") for p in q["posts"]) else 1)
     item = next((p for p in q["posts"] if not p.get("posted_at")), None)
     if not item:
         print("queue empty: nothing to post")
         return
-    video_url = q["base_url"] + item["file"]
-    print("next:", item["file"])
+    video_url = item.get("url") or q["base_url"] + item["file"]
+    print("next:", item["file"], "at", item.get("post_at", "the next run"))
+    now = datetime.datetime.now(UTC)
+    if item.get("post_at"):
+        wait = (parse(item["post_at"]) - now).total_seconds()
+        if "--wait" in sys.argv:
+            if wait > 0:
+                print("sleeping %d min" % (min(wait, WAIT_MAX) // 60), flush=True)
+                time.sleep(min(wait, WAIT_MAX))
+            return
+        if wait > 60 and "--force" not in sys.argv:
+            print("not due for %d min" % (wait // 60))
+            return
+        if wait < -3600:
+            print("late by %d min (a run was missed)" % (-wait // 60))
+    elif "--wait" in sys.argv:
+        return
     last = max((p["posted_at"] for p in q["posts"] if p.get("posted_at")), default=None)
     if last and "--force" not in sys.argv:
-        ago = datetime.datetime.now(datetime.timezone.utc) - datetime.datetime.strptime(last, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
-        if ago < datetime.timedelta(minutes=115):
+        ago = now - parse(last)
+        if ago < datetime.timedelta(minutes=100 if item.get("post_at") else 115):
             print("last post was %d min ago: waiting for the next run" % (ago.total_seconds() // 60))
             return
     if dry:
@@ -101,7 +131,7 @@ def main():
     m = call("POST", "/%s/media_publish" % ig, {"creation_id": cid})
     mid = m["id"]
     info = call("GET", "/%s" % mid, {"fields": "permalink,timestamp"})
-    item["posted_at"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    item["posted_at"] = datetime.datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     item["media_id"] = mid
     item["permalink"] = info.get("permalink")
     with open(QUEUE, "w", encoding="utf-8") as f:

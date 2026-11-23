@@ -22,8 +22,9 @@ def get(path, **params):
 
 
 print("account:", json.dumps(get("/" + IG, fields="followers_count,media_count")))
-media = get("/%s/media" % IG, fields="id,timestamp,media_product_type,permalink", limit=50).get("data", [])
+media = get("/%s/media" % IG, fields="id,timestamp,media_product_type,permalink,like_count,comments_count", limit=50).get("data", [])
 for m in media:
+    print(m["timestamp"], m.get("like_count"), m.get("comments_count"), m.get("permalink")); continue
     ins = get("/%s/insights" % m["id"], metric="views,reach,likes,comments,shares,saved,ig_reels_avg_watch_time")
     vals = {d["name"]: d["values"][0]["value"] for d in ins.get("data", [])} or ins
     print(m["timestamp"], m.get("media_product_type"), m.get("permalink"), json.dumps(vals))
